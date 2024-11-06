@@ -1,63 +1,40 @@
+// Datos de Airtable (Base ID, Table Name y API Key)
+const baseId = 'appbgh1Pb5jldKMmg';  // Base ID de tu base de Airtable
+const tableName = 'DesaparecidosDana'; // Table Name de la tabla de personas desaparecidas
+const apiKey = 'patUYTSg36fIl1kqG.33eb48858b60e875dd4029391d9d8a4d007c127c6c77056dc2851892f77bb9d2'; // Tu API Key
 
-// Configurar la contraseña
-const adminPassword = "Expertosenaccion"; // Cambia "TuContraseñaSegura" por la contraseña que prefieras
+// Función para cargar las personas desaparecidas desde Airtable
+function loadMissingPeople() {
+    fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const missingPeopleList = document.getElementById('missing-people-list');
+        missingPeopleList.innerHTML = ''; // Limpiar la lista antes de agregar nuevos datos
+        
+        data.records.forEach(record => {
+            const person = record.fields;
+            const personDiv = document.createElement('div');
+            personDiv.classList.add('person');
 
-function addMissingPerson() {
-    const photoInput = document.getElementById("photo");
-    const name = document.getElementById("name").value.trim();
-    const surname = document.getElementById("surname").value.trim();
-    const location = document.getElementById("location").value.trim();
+            personDiv.innerHTML = `
+                <img src="${person.Foto[0].url}" alt="${person.Nombre}" width="150">
+                <h3>${person.Nombre}</h3>
+                <p><strong>Localidad de desaparición:</strong> ${person.Localidad}</p>
+            `;
 
-    // Validación de campos vacíos
-    if (!photoInput.files[0] || !name || !surname || !location) {
-        alert("Por favor, completa todos los campos.");
-        return;
-    }
-
-    // Cargar la imagen
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        const missingList = document.getElementById("missing-list");
-
-        // Crear el contenedor de cada persona desaparecida
-        const missingPerson = document.createElement("div");
-        missingPerson.classList.add("missing-person");
-
-        // Añadir la imagen, el nombre, apellidos, localidad y el botón de eliminar
-        missingPerson.innerHTML = `
-            <img src="${e.target.result}" alt="Foto de ${name} ${surname}">
-            <h3>${name} ${surname}</h3>
-            <p>Localidad: ${location}</p>
-        `;
-
-        // Crear el botón de eliminar
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Eliminar";
-        deleteButton.onclick = function () {
-            // Pedir la contraseña
-            const enteredPassword = prompt("Introduce la contraseña para eliminar esta entrada:");
-
-            // Verificar la contraseña
-            if (enteredPassword === adminPassword) {
-                missingList.removeChild(missingPerson); // Elimina la entrada si la contraseña es correcta
-                alert("Entrada eliminada.");
-            } else {
-                alert("Contraseña incorrecta. No tienes permiso para eliminar esta entrada.");
-            }
-        };
-
-        // Añadir el botón de eliminar al contenedor de la persona desaparecida
-        missingPerson.appendChild(deleteButton);
-
-        // Añadir la persona a la lista
-        missingList.appendChild(missingPerson);
-    };
-
-    reader.readAsDataURL(photoInput.files[0]);
-
-    // Limpiar los campos después de añadir
-    document.getElementById("photo").value = "";
-    document.getElementById("name").value = "";
-    document.getElementById("surname").value = "";
-    document.getElementById("location").value = "";
+            missingPeopleList.appendChild(personDiv);
+        });
+    })
+    .catch(error => {
+        console.error('Error al obtener datos:', error); // Si hay un error, lo mostramos en consola
+    });
 }
+
+// Llamar a la función cuando la página se haya cargado
+window.onload = loadMissingPeople;
