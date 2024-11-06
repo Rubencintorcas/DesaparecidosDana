@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personas Desaparecidas</title>
+</head>
+<body>
+    <h1>Personas Desaparecidas</h1>
+    <div id="form-container">
+        <input type="file" id="photo" accept="image/*">
+        <input type="text" id="name" placeholder="Nombre">
+        <input type="text" id="surname" placeholder="Apellidos">
+        <input type="text" id="location" placeholder="Localidad de desaparición">
+        <button onclick="addMissingPerson()">Añadir</button>
+    </div>
+    <h2>Lista de personas desaparecidas</h2>
+    <div id="missing-list"></div>
+
+    <script>
+        const apiKey = 'patUYTSg36fIl1kqG.33eb48858b60e875dd4029391d9d8a4d007c127c6c77056dc2851892f77bb9d2'; // Tu API Key de Airtable
+        const baseId = 'appbgh1Pb5jldKMmg'; // Tu Base ID de Airtable
+        const tableName = 'tblwyPiwmCpMH22I8'; // Tu tabla en Airtable
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // Proxy CORS
+
+        async function loadMissingPeople() {
+            try {
+                const response = await fetch(`${proxyUrl}https://api.airtable.com/v0/${baseId}/${tableName}`, {
+                    headers: { 
+                        Authorization: `Bearer ${apiKey}` 
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error al obtener datos: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                if (!data.records || !Array.isArray(data.records)) {
+                    console.error("Formato de datos inesperado", data);
+                    return;
+                }
+
+                const missingList = document.getElementById("missing-list");
+                missingList.innerHTML = ""; // Limpiar la lista antes de recargar
+
+                data.records.forEach(record => {
+                    const { fields } = record;
+                    const personDiv = document.createElement("div");
+                    personDiv.classList.add("missing-person");
+
+                    const photoUrl = fields.Photo ? fields.Photo[0].url : '';
+                    const name = fields.Name || 'Nombre desconocido';
+                    const surname = fields.Surname || 'Apellido desconocido';
+                    const location = fields.Location || 'Localidad desconocida';
+
+                    personDiv.innerHTML = `
+                        <img src="${photoUrl}" alt="Foto de ${name} ${surname}" style="max-width: 200px; max-height: 200px;">
+                        <h3>${name} ${surname}</h3>
+                        <p>Localidad: ${location}</p>
+                    `;
+                    missingList.appendChild(personDiv);
+                });
+            } catch (error) {
+                console.error("Error al cargar personas desaparecidas:", error);
+            }
+        }
+
+        async function addMissingPerson() {
+            const photoInput = document.getElementById("photo");
+            const name = document.getElementById("name").value.trim();
+            const surname = document.getElementById("surname").value.trim();
+            const location = document.getElementById("location").value.trim();
+
+            if (!name || !surname || !location || !photoInput.files[0]) {
+                alert("Por favor, complete todos los campos y seleccione una foto.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async function () {
+                const photo = reader.result;
+
+                try {
+                    const response = await fetch(`${proxyUrl}https://api.airtable.com/v0/${baseId}/${tableName}`, {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${apiKey}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            fields: {
+                                Photo: [{ url: photo }],
+                                Name: name,
+                                Surname: surname,
+                                Location: location
+                            }
+                        })
+  
