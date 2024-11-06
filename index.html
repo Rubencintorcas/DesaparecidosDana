@@ -17,10 +17,11 @@
     <h2>Lista de personas desaparecidas</h2>
     <div id="missing-list"></div>
 
+    <!-- Coloca el script al final -->
     <script>
         const apiKey = 'patUYTSg36fIl1kqG.33eb48858b60e875dd4029391d9d8a4d007c127c6c77056dc2851892f77bb9d2'; // Tu API Key de Airtable
         const baseId = 'appbgh1Pb5jldKMmg'; // Tu Base ID de Airtable
-        const tableName = 'Desaparecidos'; // Tu tabla en Airtable
+        const tableName = 'tblwyPiwmCpMH22I8'; // Tu tabla en Airtable
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // Proxy CORS
 
         async function loadMissingPeople() {
@@ -97,4 +98,24 @@
                                 Location: location
                             }
                         })
-  
+                    });
+
+                    if (response.ok) {
+                        loadMissingPeople(); // Recargar la lista después de agregar la persona
+                    } else {
+                        console.error("Error al añadir la persona:", response.statusText);
+                        alert("Error al añadir la persona.");
+                    }
+                } catch (error) {
+                    console.error("Error de red al añadir la persona:", error);
+                }
+            };
+
+            reader.readAsDataURL(photoInput.files[0]);
+        }
+
+        // Cargar la lista de desaparecidos al inicio
+        loadMissingPeople();
+    </script>
+</body>
+</html>
