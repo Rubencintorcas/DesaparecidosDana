@@ -1,6 +1,6 @@
 // Datos de Airtable (Base ID, Table Name y API Key)
 const baseId = 'appbgh1Pb5jldKMmg';  // Base ID de tu base de Airtable
-const tableName = 'DesaparecidosDana'; // Table Name de la tabla de personas desaparecidas
+const tableName = 'tblwyPiwmCpMH22I8'; // Table Name de la tabla de personas desaparecidas
 const apiKey = 'patUYTSg36fIl1kqG.33eb48858b60e875dd4029391d9d8a4d007c127c6c77056dc2851892f77bb9d2'; // Tu API Key
 
 // Función para cargar las personas desaparecidas desde Airtable
