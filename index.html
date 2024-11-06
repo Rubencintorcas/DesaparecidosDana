@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desaparecidos</title>
-    <link rel="stylesheet" href="Styles.css">
+    <title>Lista de Personas Desaparecidas</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <h1>Personas Desaparecidas</h1>
+    <h1>Lista de Personas Desaparecidas</h1>
     
-    <!-- Formulario para añadir personas desaparecidas -->
-    <form id="add-person-form">
-        <input type="file" id="photo" accept="image/*">
-        <input type="text" id="first-name" placeholder="Nombre" required>
-        <input type="text" id="last-name" placeholder="Apellidos" required>
-        <input type="text" id="location" placeholder="Localidad de desaparición" required>
-        <button type="button id="add-person-btn">Añadir</button>
-    </form>
+    <!-- Formulario para añadir persona -->
+    <div id="form-container">
+        <input type="text" id="name-input" placeholder="Nombre y Apellidos">
+        <input type="text" id="location-input" placeholder="Localidad de Desaparición">
+        <input type="file" id="photo-input" accept="image/*">
+        <button id="add-person-btn">Añadir Persona</button>
+    </div>
 
-    <h2>Lista de personas desaparecidas</h2>
-    <div id="missing-people-list"></div> 
+    <!-- Contenedor para la lista de personas desaparecidas -->
+    <div id="missing-people-list"></div>
+
+    <!-- Script al final del cuerpo -->
+    <script src="script.js"></script>
+</body>
+</html>
 
     <script src="script.js" defer></script>
 
