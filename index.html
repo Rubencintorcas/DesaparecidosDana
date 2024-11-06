@@ -4,17 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desaparecidos</title>
-    <!-- Aquí puedes incluir un enlace a tu archivo CSS si es necesario -->
     <link rel="stylesheet" href="Styles.css">
 </head>
 <body>
 
-    <h1>Lista de personas desaparecidas</h1>
+    <h1>Personas Desaparecidas</h1>
     
-    <!-- Aquí se mostrará la lista de personas desaparecidas -->
+    <!-- Formulario para añadir personas desaparecidas -->
+    <form id="add-person-form">
+        <input type="file" id="photo" accept="image/*">
+        <input type="text" id="first-name" placeholder="Nombre" required>
+        <input type="text" id="last-name" placeholder="Apellidos" required>
+        <input type="text" id="location" placeholder="Localidad de desaparición" required>
+        <button type="button" onclick="addPerson()">Añadir</button>
+    </form>
+
+    <h2>Lista de personas desaparecidas</h2>
     <div id="missing-people-list"></div> 
 
-    <!-- Enlazamos el archivo JavaScript -->
     <script src="script.js"></script>
 
 </body>
