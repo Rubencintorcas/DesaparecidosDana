@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Datos de Airtable
-    const baseId = 'appbgh1Pb5jldKMmg';  // Base ID de tu base de Airtable
-    const tableName = 'tblwyPiwmCpMH22I8'; // Nombre de la tabla de personas desaparecidas
-    const apiKey = 'patUYTSg36fIl1kqG.33eb48858b60e875dd4029391d9d8a4d007c127c6c77056dc2851892f77bb9d2'; // Tu API Key
+    const baseId = '';  // Base ID de tu base de Airtable
+    const tableName = ''; // Nombre de la tabla de personas desaparecidas
+    const apiKey = ''; // Tu API Key
 
     // Selecciona el botón y añade el evento de clic para agregar una persona
     document.getElementById("add-person-btn").addEventListener("click", addPerson);
